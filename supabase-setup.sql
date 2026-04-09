@@ -41,7 +41,7 @@ CREATE TABLE products (
   vendor_id UUID REFERENCES vendors(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   description TEXT,
-  plu_code CHAR(4),
+  plu_code CHAR(5),
   category TEXT,
   unit_type unit_type_enum NOT NULL DEFAULT 'lb',
   is_specialty BOOLEAN DEFAULT FALSE,
@@ -53,7 +53,7 @@ CREATE TABLE products (
 
 -- PLU Reference table (pre-seeded with common produce codes)
 CREATE TABLE plu_reference (
-  code CHAR(4) PRIMARY KEY,
+  code CHAR(5) PRIMARY KEY,
   name TEXT NOT NULL,
   category TEXT NOT NULL,
   typical_unit TEXT,
