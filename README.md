@@ -2,7 +2,9 @@
 
 A comprehensive, Apple-style web application for farmers market vendors to manage inventory, process payments, and analyze sales.
 
-![FarmVend](https://via.placeholder.com/1200x630/22c55e/ffffff?text=FarmVend)
+**Live Demo**: https://farmvend.vercel.app
+
+---
 
 ## Features
 
@@ -30,6 +32,8 @@ A comprehensive, Apple-style web application for farmers market vendors to manag
 - Top products analysis
 - Wholesale channel management
 
+---
+
 ## Tech Stack
 
 - **Frontend**: Next.js 14 (App Router), React 18, TypeScript
@@ -37,36 +41,38 @@ A comprehensive, Apple-style web application for farmers market vendors to manag
 - **Database**: Supabase PostgreSQL with Row Level Security
 - **Storage**: Supabase Storage (for inventory photos)
 - **Payments**: Square Connect API
-- **Styling**: Tailwind CSS with custom design system
+- **Hosting**: Vercel (recommended) or any Node.js hosting
 
-## Getting Started
+---
+
+## Deployment Guide
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or yarn
-- Supabase account
-- Square developer account (for payment processing)
+1. **Supabase Account** (free): https://supabase.com
+2. **Square Developer Account** (free): https://developer.squareup.com
+3. **Vercel Account** (free): https://vercel.com
 
-### Installation
+### Step 1: Create Supabase Project
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd farmers-market
-```
+1. Go to https://supabase.com and create a new project
+2. Note your **Project URL** and **anon/public key** from Settings > API
+3. Go to **SQL Editor** and run the `supabase-setup.sql` file (included in this repo)
+4. Enable **Email** auth in Authentication > Providers
 
-2. Install dependencies:
-```bash
-npm install
-```
+### Step 2: Create Square Developer Account
 
-3. Set up environment variables:
-```bash
-cp .env.example .env.local
-```
+1. Go to https://developer.squareup.com and create an account
+2. Create a new application (Sandbox mode for testing)
+3. Get your **Access Token** and **Location ID** from the dashboard
+4. For production, you'll need to apply for a production account
 
-Edit `.env.local` with your credentials:
+### Step 3: Deploy to Vercel
+
+1. Fork this repo to your GitHub account
+2. Go to https://vercel.com and import the forked repo
+3. Add the following environment variables:
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
@@ -75,12 +81,35 @@ SQUARE_ENVIRONMENT=sandbox
 SQUARE_LOCATION_ID=your_square_location_id
 ```
 
-4. Run the development server:
+4. Click Deploy
+
+### Step 4: Configure Custom Domain (Optional)
+
+In Vercel dashboard, go to Settings > Domains to add your custom domain.
+
+---
+
+## Getting Started (Local Development)
+
 ```bash
+# Clone the repo
+git clone https://github.com/chloe4ai/farmvend.git
+cd farmvend
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env.local
+# Edit .env.local with your Supabase and Square credentials
+
+# Run development server
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000)
+
+---
 
 ## Project Structure
 
@@ -99,26 +128,15 @@ src/
 │   └── api/                # API routes
 ├── components/             # React components
 │   ├── ui/                 # Design system (Button, Card, Input...)
-│   ├── layout/             # Layout components
-│   └── ...                 # Feature components
+│   └── layout/             # Layout components
 ├── lib/                    # Utilities & integrations
 │   ├── supabase/           # Supabase client
 │   ├── square/             # Square SDK wrapper
-│   └── pricing/            # Pricing engine
+│   └── pricing/            # Pricing engine + PLU codes
 └── types/                  # TypeScript definitions
 ```
 
-## Database Schema
-
-The system uses the following core tables:
-- `vendors` - Vendor business profiles
-- `products` - Product catalog with PLU codes
-- `plu_reference` - Standardized PLU code database
-- `market_days` - Market day sessions
-- `inventory_snapshots` - Opening/closing inventory
-- `sales_transactions` - All sales transactions
-- `daily_reconciliations` - End-of-day summaries
-- `wholesale_orders` - Non-market day bulk sales
+---
 
 ## Design System
 
@@ -130,11 +148,30 @@ The app uses an Apple-inspired design with a light green color palette:
 - **Shadows**: Soft, layered shadows for depth
 - **Typography**: System font stack (-apple-system, SF Pro, etc.)
 
+---
+
+## Database Schema
+
+Core tables:
+- `vendors` - Vendor business profiles
+- `products` - Product catalog with PLU codes
+- `plu_reference` - Standardized PLU code database (pre-seeded)
+- `market_days` - Market day sessions
+- `inventory_snapshots` - Opening/closing inventory
+- `sales_transactions` - All sales transactions
+- `daily_reconciliations` - End-of-day summaries
+- `wholesale_orders` - Non-market day bulk sales
+- `price_baselines` - Competitor prices
+- `vendor_pricing_rules` - Pricing strategies
+
+All tables have Row Level Security (RLS) enabled for data isolation.
+
+---
+
 ## API Routes
 
 ### Products
-- `GET /api/products` - List vendor products
-- `POST /api/products` - Create product
+- `GET/POST /api/products` - List/create products
 - `GET /api/products/plu/:code` - PLU lookup
 
 ### Market Days
@@ -149,6 +186,8 @@ The app uses an Apple-inspired design with a light green color palette:
 ### Payments (Square)
 - `POST /api/payments/square/charge` - Process card payment
 - `POST /api/payments/square/refund` - Refund transaction
+
+---
 
 ## License
 
