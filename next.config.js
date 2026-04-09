@@ -12,9 +12,9 @@ const nextConfig = {
       },
     ],
   },
-  // Disable Turbopack to avoid build issues
+  // Mark packages with native modules for server-side only (Next.js 14)
   experimental: {
-    turbo: undefined,
+    serverComponentsExternalPackages: ['square'],
   },
 }
 
