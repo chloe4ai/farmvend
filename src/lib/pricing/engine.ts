@@ -99,11 +99,11 @@ export function calculatePrice(input: PricingInput): PricingOutput {
   }
 
   // Apply min/max constraints from rule
-  if (rule?.min_price_cents !== null && suggestedPrice < (rule?.min_price_cents ?? 0)) {
-    suggestedPrice = rule.min_price_cents!;
+  if (rule && rule.min_price_cents !== null && suggestedPrice < rule.min_price_cents) {
+    suggestedPrice = rule.min_price_cents;
   }
-  if (rule?.max_price_cents !== null && suggestedPrice > (rule?.max_price_cents ?? Infinity)) {
-    suggestedPrice = rule.max_price_cents!;
+  if (rule && rule.max_price_cents !== null && suggestedPrice > rule.max_price_cents) {
+    suggestedPrice = rule.max_price_cents;
   }
 
   return {

@@ -82,7 +82,6 @@ export default function NewMarketDayPage() {
             <Input
               label="Location"
               placeholder="Downtown Farmers Market"
-              icon={<MapPin className="w-4 h-4" />}
             />
             <Input
               label="Weather (optional)"

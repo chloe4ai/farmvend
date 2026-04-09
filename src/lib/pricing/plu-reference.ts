@@ -157,5 +157,5 @@ export function getPLUByCategory(category: string): PLUEntry[] {
  * Get all unique categories
  */
 export function getCategories(): string[] {
-  return [...new Set(PLU_DATABASE.map((entry) => entry.category))].sort();
+  return Array.from(new Set(PLU_DATABASE.map((entry) => entry.category))).sort();
 }

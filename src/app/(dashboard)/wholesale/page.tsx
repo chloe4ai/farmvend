@@ -212,9 +212,9 @@ export default function WholesalePage() {
                     variant={
                       order.status === "delivered"
                         ? "success"
-                        : order.status === "pending"
-                        ? "warning"
-                        : "info"
+                        : order.status === "paid"
+                        ? "info"
+                        : "warning"
                     }
                   >
                     {order.status}

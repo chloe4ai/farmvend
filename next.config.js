@@ -12,6 +12,10 @@ const nextConfig = {
       },
     ],
   },
+  // Disable Turbopack to avoid build issues
+  experimental: {
+    turbo: undefined,
+  },
 }
 
 module.exports = nextConfig
