@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input, Select } from "@/components/ui/Input";
+import { createClient } from "@/lib/supabase/client";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -22,15 +23,42 @@ export default function SignupPage() {
     const password = formData.get("password") as string;
     const marketDay = formData.get("marketDay") as string;
 
-    if (businessName && email && password && marketDay) {
-      // Demo mode - in production, this would create Supabase auth + vendor
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1500);
-    } else {
+    if (!businessName || !email || !password || !marketDay) {
       setError("Please fill in all fields");
       setIsLoading(false);
+      return;
     }
+
+    const supabase = createClient();
+
+    // Sign up with Supabase Auth
+    const { data, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          business_name: businessName,
+          primary_market_day: marketDay,
+        },
+      },
+    });
+
+    if (authError) {
+      setError(authError.message);
+      setIsLoading(false);
+      return;
+    }
+
+    // If email confirmation is required
+    if (data.user && !data.session) {
+      setError("");
+      setIsLoading(false);
+      alert("Check your email for a confirmation link to complete signup.");
+      return;
+    }
+
+    router.push("/dashboard");
+    router.refresh();
   }
 
   return (
