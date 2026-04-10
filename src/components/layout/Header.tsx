@@ -1,8 +1,19 @@
 "use client";
 
-import { Bell, Search, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Bell, LogOut, Search, User } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 export function Header() {
+  const router = useRouter();
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
+
   return (
     <header className="h-16 bg-white/80 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-6">
       {/* Search */}
@@ -34,6 +45,15 @@ export function Header() {
             <p className="text-sm font-medium text-gray-800">Green Valley Farm</p>
             <p className="text-xs text-gray-500">Premium Vendor</p>
           </div>
+        </button>
+
+        {/* Sign Out */}
+        <button
+          onClick={handleSignOut}
+          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+          title="Sign out"
+        >
+          <LogOut className="w-5 h-5" />
         </button>
       </div>
     </header>
