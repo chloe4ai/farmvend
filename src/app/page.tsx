@@ -51,9 +51,9 @@ export default function Home() {
               Start Free Trial <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
-          <Link href="/demo">
+          <Link href="/login">
             <Button variant="secondary" size="lg">
-              View Demo
+              Sign In
             </Button>
           </Link>
         </div>
