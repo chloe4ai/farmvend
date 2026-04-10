@@ -87,9 +87,10 @@ export default function LoginPage() {
                 />
                 <span className="text-sm text-gray-600">Remember me</span>
               </label>
-              <Link href="/forgot-password" className="text-sm text-green-600 hover:text-green-700">
+                            <button type="button" onClick={() => setError("Contact support to reset your password.")} className="text-sm text-green-600 hover:text-green-700">
                 Forgot password?
-              </Link>
+              </button>
+
             </div>
 
             <Button type="submit" className="w-full" isLoading={isLoading}>
