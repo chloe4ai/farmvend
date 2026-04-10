@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,15 +21,20 @@ export default function LoginPage() {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    // Demo mode - in production, this would call Supabase auth
-    if (email && password) {
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
-    } else {
-      setError("Please enter your email and password");
+    const supabase = createClient();
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
+      setError(authError.message);
       setIsLoading(false);
+      return;
     }
+
+    router.push("/dashboard");
+    router.refresh();
   }
 
   return (
@@ -87,10 +93,9 @@ export default function LoginPage() {
                 />
                 <span className="text-sm text-gray-600">Remember me</span>
               </label>
-                            <button type="button" onClick={() => setError("Contact support to reset your password.")} className="text-sm text-green-600 hover:text-green-700">
+              <button type="button" onClick={() => setError("Contact support to reset your password.")} className="text-sm text-green-600 hover:text-green-700">
                 Forgot password?
               </button>
-
             </div>
 
             <Button type="submit" className="w-full" isLoading={isLoading}>
@@ -108,9 +113,8 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Demo notice */}
         <p className="mt-6 text-center text-sm text-gray-400">
-          Demo mode: Enter any email and password to explore
+          Sign in with your Supabase account credentials
         </p>
       </div>
     </div>
